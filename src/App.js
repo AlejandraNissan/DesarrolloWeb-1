@@ -18,46 +18,44 @@ function App() {
   const [state, setState] = useState("");
 
   const [stateModel, setStateModel] = useState({
-    name: "",
-    lastName: "",
-    age: 0,
+    name:"",
+    lastName:"",
+    age:0
   });
 
-  function setData(e) {
-    switch (e.target.id) {
-      case "1":
+  function setData(e){
+    switch(e.target.id){
+      case '1':
         stateModel.name = e.target.value;
         break;
-
-      case "2":
+      case '2':
         stateModel.lastName = e.target.value;
         break;
-
-      case "3":
+      case '3':
         stateModel.age = e.target.value;
         break;
     }
     console.log(stateModel);
   }
 
-  // const [modalShow, setModalShow] = useState(false);
-  // const [btnActivo, setBtnActivo] = useState("Cargando");
-  // const [show, setShow] = useState(false);
-  // const handleShow = () => setShow(true);
+  const [modalShow, setModalShow] = useState(false);
+  const [btnActivo, setBtnActivo] = useState("Cargando");
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
 
-  // const handleSelect = () => {
-  //   setModalShow(true);
-  // };
+  const handleSelect = () => {
+    setModalShow(true);
+  };
 
-  // const handleSelectFromButton = (props) => {
-  //   console.log(props.target.id);
-  //   setBtnActivo(props.target.id);
-  //   setModalShow(true);
-  // };
+  const handleSelectFromButton = (props) => {
+    console.log(props.target.id);
+    setBtnActivo(props.target.id);
+    setModalShow(true);
+    console.warn(props.target);
+  };
 
   useEffect(() => {
     axios.get("https://jsonplaceholder.typicode.com/users").then((res) => {
-      console.log(res);
       setNombres(res.data);
     });
   }, []);
@@ -95,21 +93,31 @@ function App() {
             <LinkContainer to="/formulario">
               <Nav.Link>Formulario</Nav.Link>
             </LinkContainer>
-            {/* <LinkContainer to="/Formulario">
+            <LinkContainer to="/Formulario">
               <Nav.Link>{btnActivo}</Nav.Link>
-            </LinkContainer> */}
+            </LinkContainer>
             <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-              {/* <NavDropdown.Item onClick={() => handleShow()}>
+              <NavDropdown.Item onClick={() => handleShow()}>
                 Canva
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={() => handleSelect()}>
                 Modal
-              </NavDropdown.Item> */}
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
+          <MyVerticallyCenteredModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            nombres={nombres}
+            // deleteTodo={deleteTodo}
+            // _handleClick={(a) => handleClick(a)}
+          />
 
-          {/* <MyButton /> */}
+          <MyButton 
+            nombres = {nombres}
+            _handleSelectFromButton = {(a)=> handleSelectFromButton(a)}
+          />
         </Navbar.Collapse>
       </Navbar>
 
@@ -117,17 +125,15 @@ function App() {
         <Route path={"/usuarios"}>
           <Container style={{ padding: 30 }}>
             <u>
-              <Usuarios data={nombres} />{" "}
+              <Usuarios data={nombres}/>{""}
             </u>
           </Container>
         </Route>
         <Route path={"/Formulario"}>
           <Container style={{ padding: 20 }}>
-            <div onChange={(e) => setData(e)}>
-              <input id="1" placeholder={"Nombre"} />
-              <input id="2" placeholder={"Apellido"} />
-              <input id="3" placeholder={"Edad"} />
-            </div>
+            <input  id = "1" placeholder={"Nombre"} onChange={(e)=>setData(e)}/>
+            <input  id = "2" placeholder={"Apellido"} onChange={(e)=>setData(e)}/>
+            <input  id = "3" placeholder={"Edad"} onChange={(e)=>setData(e)}/>
           </Container>
         </Route>
       </Switch>
